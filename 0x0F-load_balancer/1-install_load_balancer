@@ -15,6 +15,7 @@ frontend  erick_frontend
         bind *:80
         mode http
         default_backend besthor_backend
+
 backend erick_backend
         balance roundrobin
         server 176572-web-01 52.91.148.126:80 check
