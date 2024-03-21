@@ -47,5 +47,5 @@ frontend erick_frontend-https
 
 backend erick_backend
         balance roundrobin
-        server 176572-web-01 3.80.18.8:80 check
-        server 176572-web-02 100.25.153.63:80 check
+        server 494635-web-01 100.27.13.38:80 check
+        server 494635-web-02 54.160.65.72:80 check
