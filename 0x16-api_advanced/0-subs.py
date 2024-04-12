@@ -1,17 +1,26 @@
 #!/usr/bin/python3
-"""Module for task 0"""
+"""
+this module contains a function that queries the Reddit API and returns the
+number of subscribers for a given subreddit, if an invalid subreddit is
+given, the function should return 0
+"""
+
+import requests
 
 
 def number_of_subscribers(subreddit):
-    """Queries the Reddit API and returns the number of subscribers
-    to the subreddit"""
-    import requests
+    """
+    queries the Reddit API and returns number of subscribers for a given
+    subreddit
+    """
+    url = 'https://www.reddit.com/r/{}/about.json'.format(subreddit)
+    h = {'User-agent': 'ad-erick'}
+    r = requests.get(url, headers=h, allow_redirects=False)
 
-    sub_info = requests.get("https://www.reddit.com/r/{}/about.json"
-                            .format(subreddit),
-                            headers={"User-Agent": "My-User-Agent"},
-                            allow_redirects=False)
-    if sub_info.status_code >= 300:
-        return 0
-
-    return sub_info.json().get("data").get("subscribers")
+    if r.status_code == 200:
+        req = r.json()
+        info = req.get('data')
+        subscribers = info.get('subscribers')
+        if info is not None and subscribers is not None:
+            return subscribers
+    return 0

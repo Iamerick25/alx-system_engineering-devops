@@ -1,18 +1,33 @@
 #!/usr/bin/python3
-"""Module for task 1"""
+"""
+this module contains a function that queries the Reddit API and prints the
+titles of the first 10 hot posts listed for a given subreddit
+"""
+
+import requests
 
 
 def top_ten(subreddit):
-    """Queries the Reddit API and returns the top 10 hot posts
-    of the subreddit"""
-    import requests
+    """
+    function queries the Reddit API and prints the titles of the first 10 hot
+    posts listed for a given subreddit
+    """
 
-    sub_info = requests.get("https://www.reddit.com/r/{}/hot.json?limit=10"
-                            .format(subreddit),
-                            headers={"User-Agent": "My-User-Agent"},
-                            allow_redirects=False)
-    if sub_info.status_code >= 300:
-        print('None')
+    url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)
+    h = {'User-agent': 'ad-erick'}
+    r = requests.get(
+            url, headers=h, allow_redirects=False, params={'limit': 10})
+
+    if r.status_code == 200:
+        req = r.json()
+        data = req.get('data')
+        children = data.get('children')
+        if data is None or children is None:
+            print('None')
+        else:
+            for post in children:
+                post_data = post.get('data')
+                title = post_data.get('title')
+                print(title)
     else:
-        [print(child.get("data").get("title"))
-         for child in sub_info.json().get("data").get("children")]
+        print('None')
